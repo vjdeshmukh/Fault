@@ -273,7 +273,13 @@ extension Fault {
                             warnAboutDFF = true
                         }
                         for hook in instance.portlist {
-                            faultPoints.insert("\(instance.name).\(hook.portname)")
+                            if hook.portname == Python.None {
+                                // Primitive gate — use argname directly (module-level wire)
+                                faultPoints.insert("\(hook.argname)")
+                            } else {
+                                // Standard cell — prefix with instance name
+                                faultPoints.insert("\(instance.name).\(hook.portname)")
+                            }
                         }
                     }
                 }
